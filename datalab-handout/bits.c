@@ -1,7 +1,7 @@
 /* 
  * CS:APP Data Lab 
  * 
- * <Please put your name and userid here>
+ * <Dingtianqing>
  * 
  * bits.c - Source file with your solutions to the Lab.
  *          This is the file you will hand in to your instructor.
@@ -139,6 +139,7 @@ NOTES:
  *   Rating: 1
  */
 int bitAnd(int x, int y) {
+	/* just a formular */
   return ~(~x | ~y);
 }
 /* 
@@ -150,14 +151,9 @@ int bitAnd(int x, int y) {
  *   Rating: 2
  */
 int getByte(int x, int n) {
-
-
-
-
-
-
-
-  return 2;
+	/* n << 3 gives n * 8, x right shift then using a mask */
+	x = x >> (n << 3);
+  return x & 0xFF;
 
 }
 /* 
@@ -169,7 +165,18 @@ int getByte(int x, int n) {
  *   Rating: 3 
  */
 int logicalShift(int x, int n) {
-  return 2;
+	/* after arithmatic shift, set high n bits to 0 */
+	int var1 = (~n) + 32; // -n + 32 - 1
+	// printf("\nvar1 is %d\n", var1);
+	int mask = ~((~0) << var1 << 1); // can't move 32 bits when n = 0, 
+	                                 // so move 31 then 1.
+	 
+	/*  alternetative solution
+	int var1 = (~n) + 32; // -n - 1
+	//printf("\nvar1 is %d\n", var1);
+	int mask = (1 << var1 << 1) + (~0);
+	//printf("\nmask is %x\n", mask); */
+  return (x >> n) & mask;
 }
 /*
  * bitCount - returns count of number of 1's in word
@@ -198,7 +205,8 @@ int bang(int x) {
  *   Rating: 1
  */
 int tmin(void) {
-  return 2;
+	/* most significant bit is one, other bits are 0 */
+  return 1 << 31;
 }
 /* 
  * fitsBits - return 1 if x can be represented as an 
@@ -210,6 +218,8 @@ int tmin(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
+	int lower = 1 << n;
+	int upper = ~lower;
   return 2;
 }
 /* 
@@ -221,7 +231,11 @@ int fitsBits(int x, int n) {
  *   Rating: 2
  */
 int divpwr2(int x, int n) {
-    return 2;
+	/* x >> 31, is all 0 if x >=0, is all one if x < 0
+	 * thus bias is not 0 only when x >=0
+	 */
+	int bias = (x >> 31) & ((1 << n) + ~1 + 1);
+  return (x + bias) >> n;
 }
 /* 
  * negate - return -x 
@@ -231,7 +245,7 @@ int divpwr2(int x, int n) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+  return ~x + 1;
 }
 /* 
  * isPositive - return 1 if x > 0, return 0 otherwise 
@@ -241,7 +255,10 @@ int negate(int x) {
  *   Rating: 3
  */
 int isPositive(int x) {
-  return 2;
+	/* x >> 31, is all 0 if x >=0, is all one if x < 0
+	 *    ~(x >> 31) & x    give x if x >=0, 0 if x = 0
+	 */
+  return !!(~(x >> 31) & x);
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
@@ -251,7 +268,14 @@ int isPositive(int x) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  return 2;
+	int xSign = x >> 31;
+	int ySign = y >> 31;
+	int m = xSign ^ ySign; // m = 0 only when x, y has the same sign
+	int i = !!(m & xSign); // y >= 0, x < 0, return 1
+	int diff = (y + (~x + 1));
+	int j = !(diff >> 31) & (!m); // gives 1 x,y has different
+																// sign, and y >= x
+  return i | j;
 }
 /*
  * ilog2 - return floor(log base 2 of x), where x > 0
@@ -275,7 +299,8 @@ int ilog2(int x) {
  *   Rating: 2
  */
 unsigned float_neg(unsigned uf) {
- return 2;
+  int mask = 1 << 31;
+  return uf ^ mask;
 }
 /* 
  * float_i2f - Return bit-level equivalent of expression (float) x
