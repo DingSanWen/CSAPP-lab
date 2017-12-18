@@ -196,7 +196,9 @@ int bitCount(int x) {
  *   Rating: 4 
  */
 int bang(int x) {
-  return 2;
+	// if x != 0, the first bit of x | (-x) would be 1
+	int neg = ~x + 1;
+  return ((~(neg | x)) >> 31) & 0x1;
 }
 /* 
  * tmin - return minimum two's complement integer 

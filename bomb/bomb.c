@@ -65,8 +65,9 @@ int main(int argc, char *argv[])
 
     /* Do all sorts of secret stuff that makes the bomb harder to defuse. */
     initialize_bomb();
-
+    // 402338
     printf("Welcome to my fiendish little bomb. You have 6 phases with\n");
+    // 402378
     printf("which to blow yourself up. Have a nice day!\n");
 
     /* Hmm...  Six phases must be more secure than one phase! */
@@ -74,6 +75,7 @@ int main(int argc, char *argv[])
     phase_1(input);                  /* Run the phase               */
     phase_defused();                 /* Drat!  They figured it out!
 				      * Let me know how they did it. */
+    // 4023a8
     printf("Phase 1 defused. How about the next one?\n");
 
     /* The second phase is harder.  No one will ever figure out
