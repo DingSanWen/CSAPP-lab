@@ -26,3 +26,17 @@ can compile (use flag -Og) and disassemble it to look for gadgets.
 Utility program to generate byte sequences.  See documentation in lab
 handout.
 
+#### Solution
+exploit.txt
+exploit2.txt
+exploit3.txt
+exploit2r.txt
+
+run ./ctarget -i exploit-raw.txt -q 
+
+1. get exploit.txt using
+  ./hex2raw < exploit.txt > exploit-raw.txt 
+2. get touch.o using
+  gcc -c touch.s
+3. get touch.d using (disassemble)
+  objdump -d touch.o > touch.s
